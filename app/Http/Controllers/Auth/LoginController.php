@@ -13,6 +13,9 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 class LoginController extends Controller
 {
   /*
@@ -47,6 +50,11 @@ class LoginController extends Controller
 
   public function loginSantri()
   {
+    // $role = Role::create(['name' => 'super admin']);
+    // $role = Role::create(['name' => 'wali santri']);
+    // $permission = Permission::create(['name' => 'daftarulang lihat']);
+    // $permission = Permission::create(['name' => 'daftarulang tambah']);
+
     return view('auth.santri_login');
   }
 
