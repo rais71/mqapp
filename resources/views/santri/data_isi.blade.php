@@ -548,7 +548,7 @@
           </div>
         </div>
         <div class="card mt-3">
-          <input class="btn btn-primary btn-lg" type="submit" value="Simpan Data">
+          <input class="btn btn-primary btn-lg" type="submit" value="Simpan Data1">
         </div>
       </form>
     </div>
