@@ -22,6 +22,7 @@ class CreateDaftarUlangTable extends Migration
       $table->string('nama_ibu', 50);
       $table->string('tahun_ajaran', 12);
       $table->tinyInteger('status');
+      $table->integer('user_id')->nullable();
       $table->timestamps();
     });
   }

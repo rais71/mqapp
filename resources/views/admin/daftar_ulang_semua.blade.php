@@ -1,4 +1,4 @@
-@extends('admin.master')
+@extends('master')
 
 @section('title', 'Daftar Ulang')
 
@@ -13,7 +13,17 @@
       <h2 class="section-title">Data Daftar Ulang Santri</h2>
       <p class="section-lead">Data calon santri untuk dilengkapi datanya, jika sudah lengkap dapat di akses di menu
         Santri Aktif.</p>
-      <a class="btn btn-primary" href="du/tambah" role="button">Tambah Daftar Ulang</a>
+      <a class="btn btn-primary" href="du/tambah" role="button"><i class="fas fa-plus-circle"></i> Tambah</a>
+      <a class="btn btn-danger" href="du/tambah" role="button"><i class="fas fa-minus-circle"></i> Hapus</a>
+      <div class="btn-group" role="group" aria-label="Import export">
+        <button class="btn btn-info" data-toggle="modal" data-target="#importDaftarulang" role="button">
+          <i class="fas fa-cloud-upload-alt"></i> Import
+        </button>
+        <a class="btn btn-info" href="/admin/santri/du/export" role="button">
+          <i class="fas fa-cloud-download-alt"></i> Export
+        </a>
+      </div>
+
       @include('flash_message')
       <div class="card mt-3">
         <div class="table-responsive">
@@ -40,8 +50,8 @@
                 <th>
                   <div class="custom-checkbox custom-control">
                     <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input"
-                      id="checkbox-{{ $loop->iteration }}">
-                    <label for="checkbox-{{ $loop->iteration }}" class="custom-control-label">&nbsp;</label>
+                      id="checkbox-{{ $du->id }}">
+                    <label for="checkbox-{{ $du->id }}" class="custom-control-label">&nbsp;</label>
                   </div>
                 </th>
                 <td>{{ $du->nama }}</td>
@@ -79,11 +89,44 @@
           </table>
         </div>
       </div>
-
       <div class="section-body">
       </div>
     </div>
   </section>
+</div>
+
+{{---------------------------- MODAL BOOTSTRAP | IMPORTS --------------------------------------------}}
+<div class="modal fade" tabindex="-1" role="dialog" id="importDaftarulang">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Import Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/admin/santri/du/import" method="post" enctype="multipart/form-data">
+        @csrf
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="import-daftarulang" name="import-daftarulang"
+                accept=".xls,.xlsx" required>
+              <label class="custom-file-label" for="import-daftarulang">Upload Excel ...</label>
+            </div>
+            <small id="passwordHelpBlock" class="form-text text-muted">
+              Pastikan upload sesuai dengan format standar contoh.
+              <a href="/admin/santri/du/import/file_contoh"><b>(Download Contoh)</b></a>.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer bg-whitesmoke br">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Import</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 @endsection
 @section('js-specific')

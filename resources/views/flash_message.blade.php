@@ -44,3 +44,16 @@
   </div>
 </div>
 @endif
+
+@if ($errors->any())
+<div class="alert alert-danger alert-dismissible show fade mt-3 p-3">
+  <div class="alert-body">
+    <button class="close" data-dismiss="alert">
+      <span>&times;</span>
+    </button>
+    @foreach ($errors->all() as $error)
+    <li>{{ str_replace('There was an error on row', 'Terdapat error pada baris', $error) }}</li>
+    @endforeach
+  </div>
+</div>
+@endif

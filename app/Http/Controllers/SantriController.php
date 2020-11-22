@@ -22,21 +22,110 @@ use Illuminate\Support\Facades\Redirect;
 class SantriController extends Controller
 {
   /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
+
+  /**
    * Display a listing of the resource.
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
+  public function isiData()
   {
-    if (Auth::check()) {
-      $negara2 = Negara::all();
-      $provinsi2 = Provinsi::all();
-      $user2 = Auth::user();
+    $negara2 = Negara::all();
+    $provinsi2 = Provinsi::all();
+    $user = Auth::user();
+    $sudahDu = Santri::where('user_id', $user->id)->first();
 
-      // dd($auth2);
-      return view('santri.data_isi', compact('negara2', 'provinsi2', 'user2'));
+    if ($sudahDu == Null) {
+      return view('santri.data_isi', compact('negara2', 'provinsi2'));
     } else {
-      return Redirect::to('/login')->with('danger', 'Afwan, Sepertinya anda belum login. Silahkan login terlebih dahulu.');
+      $santri = Santri::findOrFail($sudahDu->id);
+      $santri->provLahir = Provinsi::find(substr($santri->kota_lahir_id, 0, 2))->nama;
+      $santri->kabLahir = Kabupaten::find($santri->kota_lahir_id)->nama;
+      $santri->provDomisili = Provinsi::find(substr($santri->kec_domisili_id, 0, 2))->nama;
+      $santri->kabDomisili = Kabupaten::find(substr($santri->kec_domisili_id, 0, 4))->nama;
+      $santri->kecDomisili = Kecamatan::find($santri->kec_domisili_id)->nama;
+
+      $sekolah = Sekolah::findOrFail($santri->pend_terakhir_id);
+      $santri->namaPendTerakhir = $sekolah->nama;
+      $santri->provPendTerakhir = Provinsi::find(substr($sekolah->kec_sekolah_id, 0, 2))->nama;
+      $santri->kabPendTerakhir = Kabupaten::find(substr($sekolah->kec_sekolah_id, 0, 4))->nama;
+      $santri->kecPendTerakhir = Kecamatan::find($sekolah->kec_sekolah_id)->nama;
+      $santri->alamatPendTerakhir = ($sekolah->alamat_sekolah != "") ? $sekolah->alamat_sekolah : '-';
+
+      $ayah = Ortuwali::findOrFail($santri->ayah_id);
+      $santri->namaAyah = $ayah->nama;
+      $santri->kontakAyah = $ayah->kontak;
+      $santri->pekerjaanAyah = ($ayah->pekerjaan != "") ? $ayah->pekerjaan : '-';
+      $santri->isWaliAyah = $ayah->sebagai_wali;
+
+      $ibu = Ortuwali::findOrFail($santri->ibu_id);
+      $santri->namaIbu = $ibu->nama;
+      $santri->kontakIbu = $ibu->kontak;
+      $santri->pekerjaanIbu = ($ibu->pekerjaan != "") ? $ibu->pekerjaan : '-';;
+      $santri->isWaliIbu = $ibu->sebagai_wali;
+
+      //Siapa Wali Santri -----------------
+      if ($santri->isWaliAyah) {
+        $santri->wali = "Ayah";
+      } elseif ($santri->isWaliIbu) {
+        $santri->wali = "Ibu";
+      } else {
+        $wali = Ortuwali::findOrFail($santri->wali_id);
+        $santri->wali = $wali->relasi;
+        $santri->namaWali = $wali->nama;
+        $santri->kontakWali = $wali->kontak;
+        $santri->pekerjaanWali = ($wali->pekerjaan != "") ? $wali->pekerjaan : '-';;
+      }
+
+      //Badge Status Santri -----------------
+      if ($santri->status == "Aktif") {
+        $santri->statusBadge = "badge-success";
+      } elseif ($santri->status == "Sudah Lulus") {
+        $santri->statusBadge = "badge-info";
+      } elseif ($santri->status == "Keluar" || $santri->status == "Dikeluarkan") {
+        $santri->statusBadge = "badge-danger";
+      } else {
+        $santri->statusBadge = "badge-secondary";
+      }
+
+      //Berkas Santri -----------------
+      $namaBerkasFoto = $santri->nis . '01' . '.%';
+      $berkasFoto = Berkas::where('path', 'like', $namaBerkasFoto)->first();
+      $santri->berkasFoto = $berkasFoto->path;
+
+      $namaBerkasIjazahDepan = $santri->nis . '02' . '.%';
+      $berkasIjazahDepan = Berkas::where('path', 'like', $namaBerkasIjazahDepan)->first();
+      $santri->berkasIjazahDepan = $berkasIjazahDepan->path;
+
+      $namaBerkasIjazahBelakang = $santri->nis . '03' . '.%';
+      $berkasIjazahBelakang = Berkas::where('path', 'like', $namaBerkasIjazahBelakang)->first();
+      $santri->berkasIjazahBelakang = $berkasIjazahBelakang->path;
+
+      $namaBerkasAkte = $santri->nis . '04' . '.%';
+      $berkasAkte = Berkas::where('path', 'like', $namaBerkasAkte)->first();
+      $santri->berkasAkte = $berkasAkte->path;
+
+      $namaBerkasKK = $santri->nis . '05' . '.%';
+      $berkasKK = Berkas::where('path', 'like', $namaBerkasKK)->first();
+      $santri->berkasKK = $berkasKK->path;
+
+      $namaBerkasSKB = $santri->nis . '06' . '.%';
+      $berkasSKB = Berkas::where('path', 'like', $namaBerkasSKB)->first();
+      $santri->berkasSKB = $berkasSKB->path;
+
+      $namaBerkasSKS = $santri->nis . '07' . '.%';
+      $berkasSKS = Berkas::where('path', 'like', $namaBerkasSKS)->first();
+      $santri->berkasSKS = $berkasSKS->path;
+
+      return view('santri.data_lihat', compact('santri'));
     }
   }
 
@@ -64,7 +153,7 @@ class SantriController extends Controller
       'jenis-kelamin' => 'required',
       'provinsi-lahir' => 'required',
       'kabupaten-lahir' => 'required',
-      'tgl-lahir-santri' => 'required|date_format:Y-m-d|before:today',
+      'tgl-lahir-santri' => 'required|date_format:d/m/Y|before:today',
       'no-kontak-utama' => 'required',
       'nisn' => 'required|digits:10',
       'nik-santri' => 'required|digits:16',
@@ -250,10 +339,14 @@ class SantriController extends Controller
 
     $santri->pend_terakhir_id = $sekolah->id;
 
+    $santri->user_id = Auth::user()->id;
+
     $santri->save();
 
-    return Redirect::to('/admin/santri')->with('success', 'Data berhasil ditambahkan!');
-    // dd($request->input());
+    // $daftarulang = DaftarUlang::
+
+    // return view('santri.data_lihat')->with('success', 'Selamat anda berhasil melengkapi data!');
+    return Redirect::to('/santri/data_lihat')->with('success', 'Data berhasil ditambahkan!');
   }
 
   /**
@@ -262,9 +355,93 @@ class SantriController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($id)
+  public function dataLihat($id)
   {
-    //
+    $user = Auth::user();
+
+    $santri = Santri::findOrFail($user->id);
+    $santri->provLahir = Provinsi::find(substr($santri->kota_lahir_id, 0, 2))->nama;
+    $santri->kabLahir = Kabupaten::find($santri->kota_lahir_id)->nama;
+    $santri->provDomisili = Provinsi::find(substr($santri->kec_domisili_id, 0, 2))->nama;
+    $santri->kabDomisili = Kabupaten::find(substr($santri->kec_domisili_id, 0, 4))->nama;
+    $santri->kecDomisili = Kecamatan::find($santri->kec_domisili_id)->nama;
+
+    $sekolah = Sekolah::findOrFail($santri->pend_terakhir_id);
+    $santri->namaPendTerakhir = $sekolah->nama;
+    $santri->provPendTerakhir = Provinsi::find(substr($sekolah->kec_sekolah_id, 0, 2))->nama;
+    $santri->kabPendTerakhir = Kabupaten::find(substr($sekolah->kec_sekolah_id, 0, 4))->nama;
+    $santri->kecPendTerakhir = Kecamatan::find($sekolah->kec_sekolah_id)->nama;
+    $santri->alamatPendTerakhir = ($sekolah->alamat_sekolah != "") ? $sekolah->alamat_sekolah : '-';
+
+    $ayah = Ortuwali::findOrFail($santri->ayah_id);
+    $santri->namaAyah = $ayah->nama;
+    $santri->kontakAyah = $ayah->kontak;
+    $santri->pekerjaanAyah = ($ayah->pekerjaan != "") ? $ayah->pekerjaan : '-';
+    $santri->isWaliAyah = $ayah->sebagai_wali;
+
+    $ibu = Ortuwali::findOrFail($santri->ibu_id);
+    $santri->namaIbu = $ibu->nama;
+    $santri->kontakIbu = $ibu->kontak;
+    $santri->pekerjaanIbu = ($ibu->pekerjaan != "") ? $ibu->pekerjaan : '-';;
+    $santri->isWaliIbu = $ibu->sebagai_wali;
+
+    //Siapa Wali Santri -----------------
+    if ($santri->isWaliAyah) {
+      $santri->wali = "Ayah";
+    } elseif ($santri->isWaliIbu) {
+      $santri->wali = "Ibu";
+    } else {
+      $wali = Ortuwali::findOrFail($santri->wali_id);
+      $santri->wali = $wali->relasi;
+      $santri->namaWali = $wali->nama;
+      $santri->kontakWali = $wali->kontak;
+      $santri->pekerjaanWali = ($wali->pekerjaan != "") ? $wali->pekerjaan : '-';;
+    }
+
+    //Badge Status Santri -----------------
+    if ($santri->status == "Aktif") {
+      $santri->statusBadge = "badge-success";
+    } elseif ($santri->status == "Sudah Lulus") {
+      $santri->statusBadge = "badge-info";
+    } elseif ($santri->status == "Keluar" || $santri->status == "Dikeluarkan") {
+      $santri->statusBadge = "badge-danger";
+    } else {
+      $santri->statusBadge = "badge-secondary";
+    }
+
+    //Berkas Santri -----------------
+    $namaBerkasFoto = $santri->nis . '01' . '.%';
+    $berkasFoto = Berkas::where('path', 'like', $namaBerkasFoto)->first();
+    $santri->berkasFoto = $berkasFoto->path;
+
+    $namaBerkasIjazahDepan = $santri->nis . '02' . '.%';
+    $berkasIjazahDepan = Berkas::where('path', 'like', $namaBerkasIjazahDepan)->first();
+    $santri->berkasIjazahDepan = $berkasIjazahDepan->path;
+
+    $namaBerkasIjazahBelakang = $santri->nis . '03' . '.%';
+    $berkasIjazahBelakang = Berkas::where('path', 'like', $namaBerkasIjazahBelakang)->first();
+    $santri->berkasIjazahBelakang = $berkasIjazahBelakang->path;
+
+    $namaBerkasAkte = $santri->nis . '04' . '.%';
+    $berkasAkte = Berkas::where('path', 'like', $namaBerkasAkte)->first();
+    $santri->berkasAkte = $berkasAkte->path;
+
+    $namaBerkasKK = $santri->nis . '05' . '.%';
+    $berkasKK = Berkas::where('path', 'like', $namaBerkasKK)->first();
+    $santri->berkasKK = $berkasKK->path;
+
+    $namaBerkasSKB = $santri->nis . '06' . '.%';
+    $berkasSKB = Berkas::where('path', 'like', $namaBerkasSKB)->first();
+    $santri->berkasSKB = $berkasSKB->path;
+
+    $namaBerkasSKS = $santri->nis . '07' . '.%';
+    $berkasSKS = Berkas::where('path', 'like', $namaBerkasSKS)->first();
+    $santri->berkasSKS = $berkasSKS->path;
+
+    $daftarulang = DaftarUlang::where('user_id', $user->id)->first();
+    $daftarulang->status = 2;
+
+    return view('santri.data_lihat', compact('santri'));
   }
 
   /**

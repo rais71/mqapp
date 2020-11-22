@@ -27,3 +27,12 @@ $("[data-checkboxes]").each(function () {
         }
     });
 });
+
+// FILE NAME CHANGE  -------------------------------------------------------------------------------
+$('.custom-file-input').on('change', function (e) {
+  // console.log(e);
+  var x = "label[for='" + this.id + "']";
+  var nilai = e.target.value;
+
+  $(x).text(nilai.split(/(\\|\/)/g).pop());
+});

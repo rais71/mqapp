@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Santri;
 use App\Models\DaftarUlang;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -48,14 +49,52 @@ class LoginController extends Controller
     $this->middleware('guest')->except('logout');
   }
 
-  public function loginSantri()
+  public function login()
   {
     // $role = Role::create(['name' => 'super admin']);
     // $role = Role::create(['name' => 'wali santri']);
-    // $permission = Permission::create(['name' => 'daftarulang lihat']);
-    // $permission = Permission::create(['name' => 'daftarulang tambah']);
+    // $permission = Permission::create(['name' => 'daftarulang edit']);
+    // $permission = Permission::create(['name' => 'daftarulang hapus']);
+    // $permission = Permission::create(['name' => 'santri lihat']);
+    // $permission = Permission::create(['name' => 'santri tambah']);
+    // $permission = Permission::create(['name' => 'santri edit']);
+    // $permission = Permission::create(['name' => 'santri hapus']);
 
-    return view('auth.santri_login');
+    // $permission = Permission::create(['name' => 'dashboard admin']);
+    // $permission = Permission::create(['name' => 'dashboard santri']);
+
+    // $permission = Permission::create(['name' => 'pengumuman lihat']);
+    // $permission = Permission::create(['name' => 'pengumuman tambah']);
+    // $permission = Permission::create(['name' => 'pengumuman edit']);
+    // $permission = Permission::create(['name' => 'pengumuman hapus']);
+    // $permission = Permission::create(['name' => 'pengumuman terbit']);
+
+    // $permission = Permission::create(['name' => 'kalender lihat']);
+    // $permission = Permission::create(['name' => 'kalender tambah']);
+    // $permission = Permission::create(['name' => 'kalender edit']);
+    // $permission = Permission::create(['name' => 'kalender hapus']);
+    // $permission = Permission::create(['name' => 'kalender terbit']);
+
+    // $permission = Permission::create(['name' => 'sendiri lihat']);
+    // $permission = Permission::create(['name' => 'sendiri tambah']);
+    // $permission = Permission::create(['name' => 'sendiri edit']);
+
+    // $role = Role::findById(2);
+    // $permissions = Permission::findMany([11, 12, 17, 22, 23, 24]);
+
+    // $role->syncPermissions($permissions);
+
+    // $role->revokePermissionTo($permission);
+
+    // $user = User::find(2);
+
+    // $user->can('beranda santri');
+
+    // $user->assignRole('wali santri');
+
+
+
+    return view('auth.login');
   }
 
   public function process_login(Request $request)
@@ -73,19 +112,21 @@ class LoginController extends Controller
     // $user = User::where('email', $request->email)->first();
 
     if (Auth::attempt($credentials)) {
-      return redirect()->route('santri');
+      $userid = Auth::user();
+      $sudahDu = Santri::where('user_id', $userid->id)->first();
+      return view('beranda', compact('sudahDu'));
     } else {
       session()->flash('danger', 'Afwan, Email atau Password Salah.');
       return redirect()->back();
     }
   }
 
-  public function registerSantri()
+  public function register()
   {
-    return view('auth.santri_register', compact('negara2', 'provinsi2'));
+    return view('auth.register');
   }
 
-  public function simpanRegisterSantri(Request $request)
+  public function simpanRegister(Request $request)
   {
     $request->validate([
       'nama-santri' => 'required',
@@ -141,6 +182,7 @@ class LoginController extends Controller
 
     // return redirect()->route('login');
   }
+
   public function logout()
   {
     \Auth::logout();

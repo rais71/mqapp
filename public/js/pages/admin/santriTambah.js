@@ -376,5 +376,4 @@ $('.custom-file-input').on('change', function (e) {
   var nilai = e.target.value;
 
   $(x).text(nilai.split(/(\\|\/)/g).pop());
-
 });

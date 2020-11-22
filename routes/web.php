@@ -17,10 +17,15 @@ Route::get('/', function () {
   return view('welcome');
 });
 
+Route::get('/beranda', 'HomeController@index')->name('home');
+
 // ADMIN - Daftar Ulang
 Route::get('/admin/santri/du', 'AdminController@semuaDaftarUlang');
 Route::get('/admin/santri/du/tambah', 'AdminController@tambahDaftarUlang');
 Route::post('/admin/santri/du/simpan', 'AdminController@simpanDaftarUlang');
+Route::post('/admin/santri/du/import', 'AdminController@importDaftarUlang');
+Route::get('/admin/santri/du/import/file_contoh', 'AdminController@importDownloadContoh');
+Route::get('/admin/santri/du/export', 'AdminController@exportDaftarUlang');
 
 // ADMIN - CRUD Santri
 Route::get('/admin/santri', 'AdminController@semuaSantri');
@@ -30,14 +35,16 @@ Route::get('/admin/santri/{id}', 'AdminController@detailSantri');
 Route::delete('/admin/santri/{id}', 'AdminController@hapusSantri');
 
 // SANTRI - Data
-Route::get('/santri', 'SantriController@index')->name('santri');
+Route::get('/santri/data_lihat', 'SantriController@lihatData');
+Route::get('/santri/data_isi', 'SantriController@isiData');
+Route::post('/santri/data_isi', 'SantriController@simpanSantri');
 
 // AUTH - Login & Register
 Route::namespace('Auth')->group(function () {
-  Route::get('/login', 'LoginController@loginSantri')->name('login');
-  Route::post('/login', 'LoginController@process_login')->name('login');
-  Route::get('/register', 'LoginController@registerSantri')->name('register');
-  Route::post('/register', 'LoginController@simpanRegisterSantri');
+  Route::get('/login', 'LoginController@login')->name('login');
+  Route::post('/login', 'LoginController@process_login');
+  Route::get('/register', 'LoginController@register')->name('register');
+  Route::post('/register', 'LoginController@simpanRegister');
   Route::post('/logout', 'LoginController@logout')->name('logout');
 });
 

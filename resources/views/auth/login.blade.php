@@ -1,73 +1,86 @@
-@extends('layouts.app')
+@extends('auth.master')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+@section('title', 'Beranda')
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@section('css-lib')
+<link rel="stylesheet" href="{{ URL::asset('node_modules/selectric/public/selectric.css') }}">
+<link rel="stylesheet" href="{{ URL::asset('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}">
 @endsection
+
+@section('main-content')
+<div class="row">
+  <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+    <div class="login-brand">
+      <img src="{{ URL::asset('images/logo120px.png') }}" alt="logo" width="100" class="shadow-light rounded-circle">
+    </div>
+
+    @include('flash_message')
+
+    <div class="card card-primary">
+      <div class="card-header">
+        <h4>Login</h4>
+      </div>
+
+      <div class="card-body">
+        <form action="{{ route('login') }}" method="post">
+          @csrf
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="text" class="form-control @if($errors->has('email')){{ "is-invalid" }}@endif"
+              name="email" value="{{ old('email') }}">
+            <span class="text-danger d-inline"><small><i>{{ $errors->first('email') }}</i></small></span>
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="control-label">Password</label>
+            <div class="float-right">
+              <a href="auth-forgot-password.html" class="text-small">
+                Lupa password?
+              </a>
+            </div>
+            <input id="password" type="password"
+              class="form-control pwstrength @if($errors->has('password')){{ "is-invalid" }}@endif"
+              data-indicator="pwindicator" name="password">
+            <span class="text-danger d-inline"><small><i>{{ $errors->first('password') }}</i></small></span>
+          </div>
+
+          <div class="form-group">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" name="setuju"
+                class="custom-control-input @if($errors->has('setuju')){{ "is-invalid" }}@endif" id="setuju"
+                @if(empty($errors->has('setuju'))){{ "checked" }}@endif>
+              <label class="custom-control-label" for="setuju">Ingat saya {{ $errors->first('setuju') }}</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg btn-block">
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="mt-5 text-muted text-center">
+      Belum memiliki akun? <a href="{{ url('register') }}">Buat Akun</a>
+    </div>
+    <div class="simple-footer">
+      Madinatul Quran - Jonggol &copy; 2020
+    </div>
+  </div>
+  @endsection
+
+  @section('js-lib')
+  <script src="{{ URL::asset('node_modules/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
+  <script src="{{ URL::asset('node_modules/selectric/public/jquery.selectric.min.js') }}"></script>
+  <script src="{{ URL::asset('node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}">
+  </script>
+  <script src="{{ URL::asset('node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.id.min.js') }}">
+  </script>
+  @endsection
+
+  @section('js-specific')
+  @endsection
+
+  </html>

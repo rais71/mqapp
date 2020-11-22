@@ -13,6 +13,12 @@ use App\Models\Ortuwali;
 use App\Models\Santri;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
+
+use App\Imports\DaftarulangImport;
+use App\Exports\DaftarulangExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
@@ -21,6 +27,15 @@ use File;
 
 class AdminController extends Controller
 {
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
 
   public function semuaSantri()
   {
@@ -37,6 +52,40 @@ class AdminController extends Controller
   public function tambahDaftarUlang()
   {
     return view('admin.daftar_ulang_tambah');
+  }
+
+  public function importDaftarUlang(Request $request)
+  {
+    $request->validate([
+      'import-daftarulang' => 'required|mimes:xls,xlsx|max:2048'
+    ], [
+      'required' => 'Kolom ini harus diisi.',
+      'size' => 'Ukuran maksimal file adalah 2 Mb.',
+      'mimes' => 'Format file harus .xls atau .xlsx.'
+    ]);
+
+    // $namaFile = $request->file('import-daftarulang')->getClientOriginalExtension() . date('d-m-Y_H:i:s');
+    // $file = $request->file('import-daftarulang')->move(public_path('/uploads/importsExcels'), $namaFile);
+    // $namaFile = $import->getClientOriginalName();
+    // $import->move(public_path('uploads/imports'), $namaFile);
+
+    $file = $request->file('import-daftarulang');
+    Excel::import(new DaftarulangImport, $file);
+
+    // str_replace('There was an error on row', 'Terdapat error pada baris', $errors);
+
+    return redirect('/admin/santri/du')->with('success', 'Data berhasil di import!');
+  }
+
+  public function importDownloadContoh()
+  {
+    $file = public_path() . "/downloads/contoh-imports.xlsx";
+    return response()->download($file);
+  }
+
+  public function exportDaftarUlang()
+  {
+    return Excel::download(new DaftarulangExport, 'MQAPP - Daftar Ulang.xlsx');
   }
 
   /**
@@ -75,7 +124,7 @@ class AdminController extends Controller
       'jenis-kelamin' => 'required',
       'provinsi-lahir' => 'required',
       'kabupaten-lahir' => 'required',
-      'tgl-lahir-santri' => 'required|date_format:Y-m-d|before:today',
+      'tgl-lahir-santri' => 'required|date_format:d/m/Y|before:today',
       'no-kontak-utama' => 'required',
       'nisn' => 'required|digits:10',
       'nik-santri' => 'required|digits:16',
@@ -262,6 +311,8 @@ class AdminController extends Controller
     $santri->pend_terakhir_id = $sekolah->id;
 
     $santri->save();
+
+    // return view('admin.santri_tambah')->with('success', 'Data berhasil ditambahkan!');
 
     return Redirect::to('/admin/santri')->with('success', 'Data berhasil ditambahkan!');
     // dd($request->input());

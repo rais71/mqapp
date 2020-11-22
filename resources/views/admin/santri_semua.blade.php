@@ -1,4 +1,4 @@
-@extends('admin.master')
+@extends('master')
 
 @section('title', 'Semua Santri')
 

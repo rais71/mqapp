@@ -1,4 +1,4 @@
-@extends('santri.master')
+@extends('master')
 
 @section('meta')
 <meta name="var" content='{{ 
@@ -13,21 +13,11 @@
 @endsection
 
 @section('title', 'Beranda')
-@section('nama-santri')
-{{ ucwords($user2->name) }}
-@endsection
 
 @section('css-lib')
-{{-- <link rel="stylesheet" href="{{ URL::asset('node_modules/bootstrap-daterangepicker/daterangepicker.css') }}"> --}}
-{{-- <link rel="stylesheet" href="{{ URL::asset('node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
---}}
 <link rel="stylesheet" href="{{ URL::asset('node_modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('node_modules/selectric/public/selectric.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}">
-{{-- <link rel="stylesheet" href="{{ URL::asset('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}">
---}}
-{{-- <link rel="stylesheet" href="{{ URL::asset('node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
---}}
 @endsection
 
 @section('main-content')
@@ -38,9 +28,9 @@
     </div>
 
     <div class="section-body">
-      <h2 class="section-title">Tambah Data Santri</h2>
-      <p class="section-lead">Silahkan isi formulir untuk menambahkan data santri baru.</p>
-      <form action="/admin/santri/simpan" method="post" enctype="multipart/form-data">
+      <h2 class="section-title">Lengkapi Data Diri</h2>
+      <p class="section-lead">Silahkan lengkapi data anda untuk penyelesaikan daftar ulang.</p>
+      <form action="/santri/data_isi" method="post" enctype="multipart/form-data">
         @csrf
         <div class="card mt-3">
           {{-------------------- Data Diri ------------------------------}}
