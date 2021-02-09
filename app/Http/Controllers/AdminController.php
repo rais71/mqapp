@@ -54,6 +54,24 @@ class AdminController extends Controller
     return view('admin.daftar_ulang_tambah');
   }
 
+  public function hapusTerpilihDaftarUlang(Request $request)
+  {
+    // $ids = $request->ids;
+    // DaftarUlang::whereIn('id', $ids)->delete();
+    // return response()->json(['success' => 'Data telah dihapus!']);
+    // dd($request->cbdu);
+
+    $duid = $request->cbdu;
+    if ($duid != Null) {
+      foreach ($duid as $du) {
+        DaftarUlang::where('id', $du)->delete();
+      }
+      return redirect('/admin/santri/du')->with('success', 'Data terpilih berhasi dihapus!');
+    } else {
+      return redirect('/admin/santri/du')->with('danger', 'Tidak ada data terpilih untuk dihapus!');
+    }
+  }
+
   public function importDaftarUlang(Request $request)
   {
     $request->validate([
@@ -64,17 +82,14 @@ class AdminController extends Controller
       'mimes' => 'Format file harus .xls atau .xlsx.'
     ]);
 
-    // $namaFile = $request->file('import-daftarulang')->getClientOriginalExtension() . date('d-m-Y_H:i:s');
-    // $file = $request->file('import-daftarulang')->move(public_path('/uploads/importsExcels'), $namaFile);
-    // $namaFile = $import->getClientOriginalName();
-    // $import->move(public_path('uploads/imports'), $namaFile);
-
     $file = $request->file('import-daftarulang');
     Excel::import(new DaftarulangImport, $file);
 
-    // str_replace('There was an error on row', 'Terdapat error pada baris', $errors);
+    $showErrorlist = true;
 
-    return redirect('/admin/santri/du')->with('success', 'Data berhasil di import!');
+    return redirect('/admin/santri/du')
+      ->with('success', 'Data berhasil di import!')
+      ->with(compact('showErrorlist'));
   }
 
   public function importDownloadContoh()
@@ -124,7 +139,7 @@ class AdminController extends Controller
       'jenis-kelamin' => 'required',
       'provinsi-lahir' => 'required',
       'kabupaten-lahir' => 'required',
-      'tgl-lahir-santri' => 'required|date_format:d/m/Y|before:today',
+      'tgl-lahir-santri' => 'required|date_format:d-m-Y|before:today',
       'no-kontak-utama' => 'required',
       'nisn' => 'required|digits:10',
       'nik-santri' => 'required|digits:16',
@@ -160,7 +175,7 @@ class AdminController extends Controller
       'required' => 'Kolom ini harus diisi.',
       'required_if' => 'Kolom ini harus diisi.',
       'tgl-lahir-santri.before' => 'Mohon isi tanggal lahir anda.',
-      'tgl-lahir-santri.date_format' => 'Mohon isi dengan format HH/BB/TTTT.',
+      'tgl-lahir-santri.date_format' => 'Mohon isi dengan format HH-BB-TTTT.',
       'nisn.digits' => 'NISN harus 10 digit angka.',
       'nik-santri.digits' => 'NIK harus 16 digit angka.',
       'size' => 'Ukuran maksimal file adalah 2 Mb.',
@@ -324,13 +339,13 @@ class AdminController extends Controller
       'nama-santri' => 'required',
       'program' => 'required',
       'jenis-kelamin' => 'required',
-      'tgl-lahir-santri' => 'required|date_format:d/m/Y|before:today',
+      'tgl-lahir-santri' => 'required|date_format:d-m-Y|before:today',
       'nama-ibu' => 'required',
       'tahun-ajaran' => 'required'
     ], [
       'required' => 'Kolom ini harus diisi.',
       'tgl-lahir-santri.before' => 'Mohon isi tanggal lahir anda.',
-      'tgl-lahir-santri.date_format' => 'Mohon isi dengan format HH/BB/TTTT.',
+      'tgl-lahir-santri.date_format' => 'Mohon isi dengan format HH-BB-TTTT.',
     ]);
 
     // $tglLhr = explode("-", $request->input('tgl-lahir-santri'));

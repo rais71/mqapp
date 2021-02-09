@@ -153,10 +153,10 @@ class SantriController extends Controller
       'jenis-kelamin' => 'required',
       'provinsi-lahir' => 'required',
       'kabupaten-lahir' => 'required',
-      'tgl-lahir-santri' => 'required|date_format:d/m/Y|before:today',
+      'tgl-lahir-santri' => 'required|date_format:d-m-Y|before:today',
       'no-kontak-utama' => 'required',
-      'nisn' => 'required|digits:10',
-      'nik-santri' => 'required|digits:16',
+      'nisn' => 'required|digits:10|unique:santri,nisn',
+      'nik-santri' => 'required|digits:16|unique:santri,nik',
       'provinsi-domisili' => 'required',
       'kabupaten-domisili' => 'required',
       'kecamatan-domisili' => 'required',
@@ -189,12 +189,13 @@ class SantriController extends Controller
       'required' => 'Kolom ini harus diisi.',
       'required_if' => 'Kolom ini harus diisi.',
       'tgl-lahir-santri.before' => 'Mohon isi tanggal lahir anda.',
-      'tgl-lahir-santri.date_format' => 'Mohon isi dengan format HH/BB/TTTT.',
+      'tgl-lahir-santri.date_format' => 'Mohon isi dengan format HH-BB-TTTT.',
       'nisn.digits' => 'NISN harus 10 digit angka.',
       'nik-santri.digits' => 'NIK harus 16 digit angka.',
-      'size' => 'Ukuran maksimal file adalah 2 Mb.',
-      'mimes' => 'Format file harus .jpg, .jpeg, atau .png.'
-
+      'max' => 'Ukuran maksimal file adalah 2 Mb.',
+      'mimes' => 'Format file harus .jpg, .jpeg, atau .png.',
+      'nisn.unique' => 'NISN anda telah dipakai, NISN harus unik dant idak boleh sama.',
+      'nik-santri.unique' => 'NIK anda telah dipakai, NIK harus unik dant idak boleh sama.'
     ]);
 
     // SIMPEN DATA SANTRI ----------------------------------------------------------------
@@ -341,12 +342,18 @@ class SantriController extends Controller
 
     $santri->user_id = Auth::user()->id;
 
+    $daftarulang = DaftarUlang::where('user_id', $santri->user_id)->first();
+    $daftarulang->status = 3;
+
     $santri->save();
+
+    $daftarulang->save();
 
     // $daftarulang = DaftarUlang::
 
+    return view('santri.data_lihat', compact('santri'))->with('success', 'Data berhasil ditambahkan!');
     // return view('santri.data_lihat')->with('success', 'Selamat anda berhasil melengkapi data!');
-    return Redirect::to('/santri/data_lihat')->with('success', 'Data berhasil ditambahkan!');
+    // return Redirect::to('/santri/data_lihat')->with('success', 'Data berhasil ditambahkan!');
   }
 
   /**
@@ -438,8 +445,7 @@ class SantriController extends Controller
     $berkasSKS = Berkas::where('path', 'like', $namaBerkasSKS)->first();
     $santri->berkasSKS = $berkasSKS->path;
 
-    $daftarulang = DaftarUlang::where('user_id', $user->id)->first();
-    $daftarulang->status = 2;
+    $santri->save();
 
     return view('santri.data_lihat', compact('santri'));
   }

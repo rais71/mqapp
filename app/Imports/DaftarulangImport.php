@@ -47,7 +47,7 @@ class DaftarulangImport implements ToModel, WithHeadingRow, WithValidation, With
       'nama'                => $row['nama'],
       'prog_pendidikan_id'  => $program,
       'jenis_kelamin'       => $jk,
-      'tanggal_lahir'       => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal_lahir'])->format('d/m/Y'),
+      'tanggal_lahir'       => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal_lahir'])->format('d-m-Y'),
       'nama_ibu'            => $row['nama_ibu'],
       'tahun_ajaran'        => strval($row['tahun_masuk']),
       'status'              => 1,

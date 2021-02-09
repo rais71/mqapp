@@ -69,6 +69,9 @@ class DaftarUlang extends Model
         return 'Belum';
         break;
       case 2:
+        return 'Terdaftar';
+        break;
+      case 3:
         return 'Sudah';
         break;
       default:

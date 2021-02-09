@@ -13,16 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-  return view('welcome');
-});
+// Route::get('/', function () {
+//   return view('welcome');
+// });
 
-Route::get('/beranda', 'HomeController@index')->name('home');
+Route::get('/beranda', 'HomeController@index')->name('beranda');
+Route::get('/', 'HomeController@index')->name('home');
 
 // ADMIN - Daftar Ulang
-Route::get('/admin/santri/du', 'AdminController@semuaDaftarUlang');
+Route::get('/admin/santri/du', 'AdminController@semuaDaftarUlang')->name('du');
 Route::get('/admin/santri/du/tambah', 'AdminController@tambahDaftarUlang');
 Route::post('/admin/santri/du/simpan', 'AdminController@simpanDaftarUlang');
+Route::delete('/admin/santri/du/hapus_terpilih', 'AdminController@hapusTerpilihDaftarUlang');
 Route::post('/admin/santri/du/import', 'AdminController@importDaftarUlang');
 Route::get('/admin/santri/du/import/file_contoh', 'AdminController@importDownloadContoh');
 Route::get('/admin/santri/du/export', 'AdminController@exportDaftarUlang');
@@ -38,6 +40,14 @@ Route::delete('/admin/santri/{id}', 'AdminController@hapusSantri');
 Route::get('/santri/data_lihat', 'SantriController@lihatData');
 Route::get('/santri/data_isi', 'SantriController@isiData');
 Route::post('/santri/data_isi', 'SantriController@simpanSantri');
+
+// KALENDER AKADEMIK
+Route::get('/kaldik', 'PagesController@lihatKaldik')->name('kaldik');
+Route::post('/kaldik/simpan', 'PagesController@simpanKaldik')->name('kaldik.simpan');
+Route::get('/kaldik/data', 'PagesController@dataKaldik')->name('kaldik.data');
+
+// KALENDER AKADEMIK
+Route::get('/pengumuman', 'PagesController@lihatPengumuman')->name('pengumuman');
 
 // AUTH - Login & Register
 Route::namespace('Auth')->group(function () {

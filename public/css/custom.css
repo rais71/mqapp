@@ -89,11 +89,16 @@ input[type="date"]::-webkit-clear-button {
 .datepicker table tr td.active:hover.active,
 .datepicker table tr td.active.disabled.active,
 .datepicker table tr td.active.disabled:hover.active {
-    background-image: linear-gradient(to bottom, #81b214, #81b214);
+    background-image: linear-gradient(to bottom, #00423e, #00423e);
 }
 
 button.dropdown-item {
     font-size: 13px;
     margin-top: -1px;
     line-height: 1.2;
+}
+
+/* Hide all-day text on FullCalendar */
+.fc-list-event-time {
+    display: none;
 }

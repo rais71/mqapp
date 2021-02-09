@@ -34,18 +34,18 @@
 @endif
 
 @if ($message = Session::get('success-register'))
-<div class="alert alert-danger alert-dismissible show fade mt-3 p-3">
+<div class="alert alert-success alert-dismissible show fade mt-3 p-3">
   <button class="close" data-dismiss="alert">
     <span>&times;</span>
   </button>
   <div class="alert-body">
-    <div class="alert-title">Alhamdulillah pendaftara berhasil.</div>
+    <div class="alert-title">Alhamdulillah, pendaftaran berhasil.</div>
     Silahkan login dengan email dan password yang baru saja anda buat.
   </div>
 </div>
 @endif
 
-@if ($errors->any())
+@if ($errors->any() && Route::is('du'))
 <div class="alert alert-danger alert-dismissible show fade mt-3 p-3">
   <div class="alert-body">
     <button class="close" data-dismiss="alert">

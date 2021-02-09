@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -92,5 +94,17 @@ class DatabaseSeeder extends Seeder
     foreach ($role_has_permissions as $role_has_permission) {
       DB::table('role_has_permissions')->insert($role_has_permission);
     }
+
+    //   DB::table('users')->insert([
+    //     'name' => 'Muhammmad Rais',
+    //     'email' => 'rais.maraya@gmail.com',
+    //     'password' => bcrypt('sapi123'),
+    //   ]);
+
+    //   DB::table('model_has_roles')->insert([
+    //     'name' => 'User1',
+    //     'email' => 'user1@email.com',
+    //     'password' => bcrypt('password'),
+    // ]);
   }
 }

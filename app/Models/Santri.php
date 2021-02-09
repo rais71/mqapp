@@ -41,7 +41,7 @@ class Santri extends Model
 
   public function getTanggalLahirAttribute()
   {
-    return date('d/m/Y', strtotime($this->attributes['tanggal_lahir']));
+    return date('d-m-Y', strtotime($this->attributes['tanggal_lahir']));
   }
 
   public function setKontakUtamaAttribute($value)

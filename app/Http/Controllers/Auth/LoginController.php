@@ -92,6 +92,13 @@ class LoginController extends Controller
 
     // $user->assignRole('wali santri');
 
+    // $user = new User();
+    // $user->password = Hash::make('sapi123');
+    // $user->email = 'rais.maraya@gmail.com';
+    // $user->name = 'Muhammad Rais';
+    // $user->save();
+    // $user->assignRole('super admin');
+
 
 
     return view('auth.login');
@@ -133,7 +140,7 @@ class LoginController extends Controller
       'email' => 'required|email|unique:users,email',
       'password' => 'required|string|min:6|regex:/[a-zA-Z]/|regex:/[0-9]/',
       'password2' => 'required|same:password',
-      'tgl-lahir-santri' => 'date_format:d/m/Y|before:today',
+      'tgl-lahir-santri' => 'date_format:d-m-Y|before:today',
       'nama-ibu' => 'required',
       'setuju' => 'accepted'
     ], [
@@ -141,7 +148,7 @@ class LoginController extends Controller
       'email' => 'Mohon isi dengan email yang benar.',
       'email.unique' => 'Mohon maaf email ini telah terpakai.',
       'tgl-lahir-santri.before' => 'Mohon isi tanggal lahir anda.',
-      'tgl-lahir-santri.date_format' => 'Mohon isi dengan format HH/BB/TTTT, Contoh 30/07/1997.',
+      'tgl-lahir-santri.date_format' => 'Mohon isi dengan format HH-BB-TTTT, Contoh 30/07/1997.',
       'password2.same' => 'Password tidak sama dengan sebelumnya.',
       'password.min' => 'Password harus 6 karakter atau lebih.',
       'password.regex' => 'Dalam password harus terdapat angka dan huruf.',
@@ -167,7 +174,13 @@ class LoginController extends Controller
         'password' => Hash::make($request->input('password')),
       ]);
 
-      return view('santri.index')->with('success-register', 'berhasil');
+      $verify->status = 2;
+      $verify->user_id = $user->id;
+      $verify->save();
+
+      $user->assignRole('wali santri');
+
+      return redirect()->route('login')->with('success-register', 'berhasil');
       // return Redirect::to('/admin/santri')->with('success-register', 'berhasil');
     }
 

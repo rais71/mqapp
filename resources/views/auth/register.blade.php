@@ -11,7 +11,7 @@
 <div class="row">
   <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
     <div class="login-brand">
-      <img src="{{ URL::asset('images/logo120px.png') }}" alt="logo" width="100" class="shadow-light rounded-circle">
+      <img src="{{ URL::asset('images/logo150px.png') }}" alt="logo" width="100" class="shadow-light rounded-circle">
     </div>
 
     @include('flash_message')
@@ -53,9 +53,9 @@
           </div>
 
           <div class="form-divider">
-            Informasi Login
-            <p class="text-muted">Data yang anda isi dibawah akan digunakan untuk masuk kedalam akun anda. Ingat
-              baik-baik informasi tersebut, catat jika perlu.</p>
+            Buat Informasi Login
+            <p class="text-muted">Email & Password yang anda isi dibawah akan digunakan untuk masuk kedalam akun anda.
+              Harap di ingat baik-baik, catat jika perlu.</p>
           </div>
 
           <div class="form-group">

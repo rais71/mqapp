@@ -30,9 +30,31 @@ $("[data-checkboxes]").each(function () {
 
 // FILE NAME CHANGE  -------------------------------------------------------------------------------
 $('.custom-file-input').on('change', function (e) {
-  // console.log(e);
-  var x = "label[for='" + this.id + "']";
-  var nilai = e.target.value;
+    // console.log(e);
+    var x = "label[for='" + this.id + "']";
+    var nilai = e.target.value;
 
-  $(x).text(nilai.split(/(\\|\/)/g).pop());
+    $(x).text(nilai.split(/(\\|\/)/g).pop());
 });
+
+// $('#hapusDataTerpilih').on('click', function (e) {
+//     e.preventDefault();
+//     var allids = [];
+//     $('input:checkbox[name=duid]:checked').each(function () {
+//         allids.push($(this).val());
+//     });
+
+//     $.ajax({
+//         url: '/admin/santri/du/hapus_terpilih',
+//         type: 'DELETE',
+//         data: {
+//             ids: allids,
+//             _token: $('input[name=_token]').val()
+//         },
+//         success: function (response) {
+//             $.each(allids, function (key, val) {
+//                 $('#duid' + val).remove();
+//             })
+//         }
+//     });
+// });
