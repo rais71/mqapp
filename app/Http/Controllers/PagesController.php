@@ -19,7 +19,7 @@ class PagesController extends Controller
 
   public function lihatKaldik()
   {
-    return view('kalender_akademik');
+    return view('informasi.kalender_akademik');
   }
 
   public function simpanKaldik(Request $request)
@@ -79,6 +79,6 @@ class PagesController extends Controller
 
   public function lihatPengumuman()
   {
-    return view('pengumuman');
+    return view('informasi.pengumuman');
   }
 }

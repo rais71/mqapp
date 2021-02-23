@@ -14,18 +14,16 @@
     </div>
 
     <div class="section-body">
-      <h2 class="section-title">Kalender Akademik</h2>
+      <h2 class="section-title">Informasi Pengumuman</h2>
       <p class="section-lead">
-        Kalender dengan informasi terbaru berdasarkan tanggal.
+        Informasi pengumuman terbaru untuk anda.
       </p>
 
       <div class="row">
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <div class="fc-overflow">
-                On Development
-              </div>
+
             </div>
           </div>
         </div>
