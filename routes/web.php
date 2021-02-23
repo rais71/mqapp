@@ -45,6 +45,7 @@ Route::post('/santri/data_isi', 'SantriController@simpanSantri');
 Route::get('/kaldik', 'PagesController@lihatKaldik')->name('kaldik');
 Route::post('/kaldik/simpan', 'PagesController@simpanKaldik')->name('kaldik.simpan');
 Route::get('/kaldik/data', 'PagesController@dataKaldik')->name('kaldik.data');
+Route::delete('/kaldik/{id}', 'PagesController@hapusAcara');
 
 // KALENDER AKADEMIK
 Route::get('/pengumuman', 'PagesController@lihatPengumuman')->name('pengumuman');

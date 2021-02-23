@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Berkas;
 use App\Models\DaftarUlang;
-use App\Models\Negara;
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -119,10 +118,9 @@ class AdminController extends Controller
    */
   public function tambahSantri()
   {
-    $negara2 = Negara::all();
     $provinsi2 = Provinsi::all();
 
-    return view('admin.santri_tambah', compact('negara2', 'provinsi2'));
+    return view('admin.santri_tambah', compact('provinsi2'));
   }
 
   /**

@@ -81,7 +81,7 @@ class DaftarUlang extends Model
 
   public function setTanggalLahirAttribute($value)
   {
-    $split = explode("/", $value);
+    $split = explode("-", $value);
     $this->attributes['tanggal_lahir'] = $split[2] . "-" . $split[1] . "-" . $split[0];
   }
 }

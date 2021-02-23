@@ -27,7 +27,8 @@ class PagesController extends Controller
     $request->validate([
       'nama-acara' => 'required',
       'tgl-mulai' => 'required|date_format:d-m-Y',
-      'tgl-selesai' => 'after:tgl-mulai',
+      'deskripsi' => 'max:500|nullable',
+      'tgl-selesai' => 'nullable|after:tgl-mulai',
       'warna-bg' => 'required'
     ], [
       'required' => 'Kolom ini harus diisi.',
@@ -40,6 +41,7 @@ class PagesController extends Controller
     $acara->judul = $request->input('nama-acara');
     $acara->awal = $request->input('tgl-mulai');
     $acara->warna = $request->input('warna-bg');
+    $acara->deskripsi = $request->input('deskripsi');
 
     if ($request->has('tgl-selesai')) {
       $acara->akhir = $request->input('tgl-selesai');
@@ -66,6 +68,13 @@ class PagesController extends Controller
     $acara = Acara::all();
     $acara->makeHidden(['created_at', 'updated_at']);
     return response()->json($acara);
+  }
+
+  public function hapusAcara($id)
+  {
+    $acara = Acara::findOrFail($id);
+    $acara->delete();
+    return redirect('/kaldik')->with('success', 'Acara berhasil dihapus!');
   }
 
   public function lihatPengumuman()

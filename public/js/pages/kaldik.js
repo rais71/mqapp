@@ -42,7 +42,24 @@ function renderCalendar() {
         eventSources: [{
             events: acara,
             borderColor: "#00423e"
-        }]
+        }],
+
+        eventClick: function (info) {
+            $('#info-acara-modal').modal('show');
+            $('#judul-acara-modal').text(info.event.title);
+            $('#form-hapus-acara-modal').attr('action', '/kaldik/' + info.event.id);
+            if (info.event.extendedProps.description != null) {
+                $('#deskripsi-acara-modal').text(info.event.extendedProps.description);
+            }
+            if (info.event.end != null) {
+                $('#waktuAcara').
+                text(info.event.start.getDate() + '-' + info.event.start.getMonth() + '-' + info.event.start.getFullYear() + " sd. " +
+                    info.event.end.getDate() + '-' + info.event.end.getMonth() + '-' + info.event.end.getFullYear());
+            } else {
+                $('#waktuAcara').
+                text(info.event.start.getDate() + '-' + info.event.start.getMonth() + '-' + info.event.start.getFullYear());;
+            }
+        }
     })
     calendar.render()
 }
@@ -62,7 +79,13 @@ getAcara().then(data => {
             } : {}),
             ...(data[i].url != null ? {
                 url: data[i].url
-            } : {})
+            } : {}),
+            ...(data[i].deskripsi != null ? {
+                extendedProps: {
+                    description: data[i].deskripsi
+                }
+            } : {}),
+
         });
     }
     renderCalendar();
@@ -134,6 +157,12 @@ $('#ulangi-hari').on('change', function () {
     } else {
         $('#tgl-selesai').prop('disabled', false);
     }
+})
+
+// Batal Tambah -------------------------------------------------------------------------------
+$('#batal-tambah').on('click', function () {
+    $('#form-tambah').trigger('reset');
+    $('#warna-dasar').trigger('click');
 })
 
 // ON WINDOW LOAD -------------------------------------------------------------------------------

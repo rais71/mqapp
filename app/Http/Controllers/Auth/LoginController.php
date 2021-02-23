@@ -155,7 +155,7 @@ class LoginController extends Controller
       'setuju.accepted' => 'Harap menyetujui ini.',
     ]);
 
-    $tglLahir = explode("/", $request->input('tgl-lahir-santri'));
+    $tglLahir = explode("-", $request->input('tgl-lahir-santri'));
     $tglLahirSql = $tglLahir[2] . "-" . $tglLahir[1] . "-" . $tglLahir[0];
 
     $verify = DaftarUlang::where('nama', $request->input('nama-santri'))

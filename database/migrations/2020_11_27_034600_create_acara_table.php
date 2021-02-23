@@ -18,6 +18,7 @@ class CreateAcaraTable extends Migration
       $table->string('judul');
       $table->date('awal');
       $table->date('akhir')->nullable();
+      $table->string('deskripsi', 500)->nullable();
       $table->string('warna');
       $table->tinyInteger('ulang');
       $table->string('url')->nullable();
