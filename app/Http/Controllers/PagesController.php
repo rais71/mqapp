@@ -116,4 +116,14 @@ class PagesController extends Controller
 
     return redirect('/pengumuman')->with('success', 'Semua pengumuman telah ditandai dibaca.');
   }
+
+  public function dibacaPengumuman(Request $request)
+  {
+    $id = auth()->user()->id;
+    $user = User::find($id);
+
+    $user->notifications->where('id', $request->input('id-pengumuman'))->markAsRead();
+
+    return redirect('/pengumuman');
+  }
 }

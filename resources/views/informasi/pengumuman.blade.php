@@ -99,9 +99,13 @@
                   </span>
                 </div>
                 {{ $notification->data['deskripsi'] }}
-                <button class="btn .btn-outline-success btn-md px-1 py-0 text-info" type="submit"><i
-                    class="fas fa-check"></i>
-                  Telah Dibaca</button>
+                <form class="d-inline" action="{{ Route('pengumuman.dibaca') }}" id="form-tambah" method="post">
+                  @csrf
+                  <input type="hidden" name="id-pengumuman" value="{{ $notification->id }}">
+                  <button class="btn .btn-outline-success btn-md px-1 py-0 text-info" type="submit"><i
+                      class="fas fa-check"></i>
+                    Telah Dibaca</button>
+                </form>
               </div>
             </div>
             @endforeach
@@ -112,8 +116,7 @@
               <h5>Telah Dibaca</h5>
             </div>
             <div id="accordion">
-              @foreach(auth()->user()->notifications as $notification)
-              @if ($notification->read_at != NULL)
+              @forelse(auth()->user()->notifications->whereNotNull('read_at') as $notification)
               <div class="accordion">
                 <div class="accordion-header" role="button" data-toggle="collapse"
                   data-target="#pengumuman-sudah-dibaca" aria-expanded="true">
@@ -126,10 +129,9 @@
                   <p class="mb-0">{{ $notification->data['deskripsi'] }}</p>
                 </div>
               </div>
-              @else
+              @empty
               Tidak ada notifikasi yang sudah dibaca.
-              @endif
-              @endforeach
+              @endforelse
             </div>
           </div>
         </div>
