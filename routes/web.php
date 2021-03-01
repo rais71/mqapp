@@ -49,6 +49,9 @@ Route::delete('/kaldik/{id}', 'PagesController@hapusAcara');
 
 // KALENDER AKADEMIK
 Route::get('/pengumuman', 'PagesController@lihatPengumuman')->name('pengumuman');
+Route::post('/pengumuman/simpan', 'PagesController@simpanPengumuman')->name('pengumuman.simpan');
+Route::post('/pengumuman/dibaca', 'PagesController@dibacaPengumuman')->name('pengumuman.dibaca');
+Route::post('/pengumuman/dibaca_semua', 'PagesController@dibacaSemuaPengumuman')->name('pengumuman.dibaca_semua');
 
 // AUTH - Login & Register
 Route::namespace('Auth')->group(function () {

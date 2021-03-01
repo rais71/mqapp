@@ -102,3 +102,8 @@ button.dropdown-item {
 .fc-list-event-time {
     display: none;
 }
+
+/* Ganti warna tanda tanya saat tidak ada data */
+.empty-state .empty-state-icon {
+    background-color: #00423e;
+}

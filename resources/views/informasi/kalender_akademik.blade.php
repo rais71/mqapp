@@ -25,8 +25,8 @@
       <div class="row">
         <div class="col-12">
           <div class="card">
+            @canany(["kalender tambah", "kalender hapus"])
             <div class="card-body">
-              @canany(["kalender tambah", "kalender hapus"])
               <p>
                 @can('kalender tambah')
                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#tambahAcara"
@@ -123,10 +123,7 @@
               </div>
             </div>
             @endcan
-
-          </div>
-          <div class="card-body">
-            <div id="acara" style="width: 100%;"></div>
+            <div id="acara" class="p-1" style="width: 100%;"></div>
           </div>
         </div>
       </div>

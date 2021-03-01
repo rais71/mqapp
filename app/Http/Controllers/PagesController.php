@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Acara;
+use App\Models\User;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 
 class PagesController extends Controller
@@ -80,5 +83,37 @@ class PagesController extends Controller
   public function lihatPengumuman()
   {
     return view('informasi.pengumuman');
+  }
+
+  public function simpanPengumuman(Request $request)
+  {
+    $request->validate([
+      'judul-pengumuman' => 'required',
+      'deskripsi' => 'max:500|required',
+    ], [
+      'required' => 'Kolom ini harus diisi.',
+    ]);
+
+    // SIMPEN DATA ACARA ----------------------------------------------------------------
+    $pengumuman = new Acara();
+    $pengumuman->judul = $request->input('judul-pengumuman');
+    $pengumuman->deskripsi = $request->input('deskripsi');
+
+    $users = User::all();
+    Notification::send($users, new \App\Notifications\Pengumuman($pengumuman));
+
+    return redirect('/pengumuman')->with('success', 'Pengumuman berhasil ditambahkan!');
+  }
+
+  public function dibacaSemuaPengumuman()
+  {
+    $id = auth()->user()->id;
+    $user = User::find($id);
+
+    foreach ($user->unreadNotifications as $notification) {
+      $notification->markAsRead();
+    }
+
+    return redirect('/pengumuman')->with('success', 'Semua pengumuman telah ditandai dibaca.');
   }
 }

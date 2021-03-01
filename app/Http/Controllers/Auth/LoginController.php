@@ -119,9 +119,7 @@ class LoginController extends Controller
     // $user = User::where('email', $request->email)->first();
 
     if (Auth::attempt($credentials)) {
-      $userid = Auth::user();
-      $sudahDu = Santri::where('user_id', $userid->id)->first();
-      return view('beranda', compact('sudahDu'));
+      return redirect('/beranda');
     } else {
       session()->flash('danger', 'Afwan, Email atau Password Salah.');
       return redirect()->back();

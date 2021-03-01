@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Santri;
 use App\Models\Berkas;
 use App\Models\DaftarUlang;
-use App\Models\Negara;
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -38,13 +37,12 @@ class SantriController extends Controller
    */
   public function isiData()
   {
-    $negara2 = Negara::all();
     $provinsi2 = Provinsi::all();
     $user = Auth::user();
     $sudahDu = Santri::where('user_id', $user->id)->first();
 
     if ($sudahDu == Null) {
-      return view('santri.data_isi', compact('negara2', 'provinsi2'));
+      return view('santri.data_isi', compact('provinsi2'));
     } else {
       $santri = Santri::findOrFail($sudahDu->id);
       $santri->provLahir = Provinsi::find(substr($santri->kota_lahir_id, 0, 2))->nama;
