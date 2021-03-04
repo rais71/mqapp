@@ -115,10 +115,11 @@ class LoginController extends Controller
     ]);
 
     $credentials = $request->only('email', 'password');
+    $ingat = $request->setuju ? true : false;
 
     // $user = User::where('email', $request->email)->first();
 
-    if (Auth::attempt($credentials)) {
+    if (Auth::attempt($credentials, $ingat)) {
       return redirect('/beranda');
     } else {
       session()->flash('danger', 'Afwan, Email atau Password Salah.');
