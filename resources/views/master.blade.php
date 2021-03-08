@@ -257,7 +257,7 @@
 
           <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
             <a href="https://api.whatsapp.com/send?phone=6285200236000&text=Assalamualaikum..."
-              class="btn btn-primary btn-lg btn-block btn-icon-split">
+              class="btn btn-primary btn-lg btn-block btn-icon-split" target="_blank">
               <i class="fas fa-phone"></i> Hubungi Kami
             </a>
           </div>
