@@ -23,6 +23,8 @@
       <h1>Santri</h1>
     </div>
 
+    @include('flash_message')
+
     <div class="section-body">
       <h2 class="section-title">Data Diri Anda</h2>
       <p class="section-lead">Informasi tentang data diri anda.</p>

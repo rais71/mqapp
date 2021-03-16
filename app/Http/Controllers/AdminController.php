@@ -494,21 +494,28 @@ class AdminController extends Controller
     $ibu = Ortuwali::findOrFail($santri->ibu_id);
     $wali = Ortuwali::findOrFail($santri->wali_id);
 
-    for ($i = 1; $i <= 7; $i++) {
-      $namaBerkasDB = $santri->nis . '0' . $i . '%';
-      $berkas = Berkas::where('path', 'like', $namaBerkasDB)->first();
+    // for ($i = 1; $i <= 7; $i++) {
+    //   $namaBerkasDB = $santri->nis . '0' . $i . '%';
+    //   $berkas = Berkas::where('path', 'like', $namaBerkasDB)->first();
 
-      if (File::exists(public_path('uploads/berkas/' . $berkas->path))) {
-        File::delete(public_path('uploads/berkas/' . $berkas->path));
-        $berkas->delete();
-      }
-    }
+    //   if (File::exists(public_path('uploads/berkas/' . $berkas))) {
+    //     File::delete(public_path('uploads/berkas/' . $berkas));
+    //     $berkas->delete();
+    //   }
+    // }
 
     $sekolah->delete();
     $ayah->delete();
     $ibu->delete();
     $wali->delete();
     $santri->delete();
+
+    $santri->user_id = Auth::user()->id;
+
+    $daftarulang = DaftarUlang::where('user_id', $santri->user_id)->first();
+    $daftarulang->status = 2;
+
+    $daftarulang->save();
 
     return Redirect::to('/admin/santri')->with('success', 'Data berhasil dihapus!');
   }

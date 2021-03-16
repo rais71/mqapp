@@ -145,36 +145,30 @@
   </div>
 </div>
 
-{{---------------------------- MODAL BOOTSTRAP | HAPUS BELOM BERES --------------------------------------------}}
-<div class="modal fade" tabindex="-1" role="dialog" id="hapusDaftarulang">
+{{---------------------------- MODAL BOOTSTRAP | KONFIRMASI HAPUS DATA --------------------------------------------}}
+<div class="modal fade" tabindex="-1" role="dialog" id="konfirmasi-hapus">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Import Data</h5>
+        <h5 class="modal-title" id="judul-acara-modal">Konfirmasi Hapus?</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/admin/santri/du/import" method="post" enctype="multipart/form-data">
-        @csrf
-        <div class="modal-body">
-          <div class="form-group">
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="import-daftarulang" name="import-daftarulang"
-                accept=".xls,.xlsx" required>
-              <label class="custom-file-label" for="import-daftarulang">Upload Excel ...</label>
-            </div>
-            <small id="passwordHelpBlock" class="form-text text-muted">
-              Pastikan upload sesuai dengan format standar contoh.
-              <a href="/admin/santri/du/import/file_contoh"><b>(Download Contoh)</b></a>.
-            </small>
-          </div>
-        </div>
-        <div class="modal-footer bg-whitesmoke br">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-primary">Import</button>
-        </div>
-      </form>
+      <div class="modal-body">
+        <p>Apakah anda yakin ingin menghapus data daftar ulang santri berserta akunnya?</p>
+      </div>
+      <div class="modal-footer bg-whitesmoke br">
+        @can('daftarulang hapus')
+        <form id="form-konfirmasi-hapus" action="" method="post">
+          @method('DELETE')
+          @csrf
+          <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i>
+            Saya yakin, Hapus!</button>
+        </form>
+        @endcan
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+      </div>
     </div>
   </div>
 </div>

@@ -32,24 +32,27 @@ $("[data-checkboxes]").each(function () {
 //     handle: '.sort-handler'
 // });
 
-let idVal="admin/santri/" + $("#modal-delete").attr("value");
-
-$("#modal-delete").fireModal({
-  title: 'Konfirmasi Hapus',
-  body: '<p>Apakah anda yakin ingin menghapus data ini?</p>',
-  created: function(modal) {
-    modal.find('.modal-footer').prepend(
-      "<div class='mr-auto'><form action='{{ " + idVal +" }}' method='post'> @method('delete') @csrf <button type='submit'>Saya yakin, Hapus!</button></form></div>"
-      );
-  },
-  buttons: [
-    {
-      text: 'Tidak jadi',
-      // submit: true,
-      class: 'btn btn-primary btn-shadow',
-      handler: function(modal) {
-        $('.close').trigger("click");
-      }
-    }
-  ], center: true
+$('.tombol-konfirmasi-hapus').on('click', function(){
+  let idVal="/admin/santri/" + $(this).attr("value");
+  $('#form-konfirmasi-hapus').attr('action', idVal);
 });
+
+// $("#modal-delete").fireModal({
+//   title: 'Konfirmasi Hapus',
+//   body: '<p>Apakah anda yakin ingin menghapus data ini?</p>',
+//   created: function(modal) {
+//     modal.find('.modal-footer').prepend(
+//       "<div class='mr-auto'><form action='{{ " + idVal +" }}' method='post'> <input type='hidden' name='_method' value='DELETE'> <input type='hidden' name='_token' value='{{ csrf_token() }}' /> <button type='submit' class='btn btn-delete btn-shadow'>Saya yakin, Hapus!</button></form></div>"
+//       );
+//   },
+//   buttons: [
+//     {
+//       text: 'Tidak jadi',
+//       // submit: true,
+//       class: 'btn btn-primary btn-shadow',
+//       handler: function(modal) {
+//         $('.close').trigger("click");
+//       }
+//     }
+//   ], center: true
+// });

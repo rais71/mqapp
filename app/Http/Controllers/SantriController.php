@@ -349,9 +349,8 @@ class SantriController extends Controller
 
     // $daftarulang = DaftarUlang::
 
-    return view('santri.data_lihat', compact('santri'))->with('success', 'Data berhasil ditambahkan!');
-    // return view('santri.data_lihat')->with('success', 'Selamat anda berhasil melengkapi data!');
-    // return Redirect::to('/santri/data_lihat')->with('success', 'Data berhasil ditambahkan!');
+    // return view('santri.data_lihat', compact('santri'))->with('success', 'Data berhasil ditambahkan!');
+    return Redirect::to('/santri/data_isi')->with('success', 'Alhamdulillah, Anda Berhasil Daftar Ulang!');
   }
 
   /**

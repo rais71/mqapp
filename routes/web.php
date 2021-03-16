@@ -37,7 +37,7 @@ Route::get('/admin/santri/{id}', 'AdminController@detailSantri');
 Route::delete('/admin/santri/{id}', 'AdminController@hapusSantri');
 
 // SANTRI - Data
-Route::get('/santri/data_lihat', 'SantriController@lihatData');
+// Route::get('/santri/data_lihat', 'SantriController@lihatData');
 Route::get('/santri/data_isi', 'SantriController@isiData');
 Route::post('/santri/data_isi', 'SantriController@simpanSantri');
 
@@ -47,7 +47,7 @@ Route::post('/kaldik/simpan', 'PagesController@simpanKaldik')->name('kaldik.simp
 Route::get('/kaldik/data', 'PagesController@dataKaldik')->name('kaldik.data');
 Route::delete('/kaldik/{id}', 'PagesController@hapusAcara');
 
-// KALENDER AKADEMIK
+// PENGUMUMAN
 Route::get('/pengumuman', 'PagesController@lihatPengumuman')->name('pengumuman');
 Route::post('/pengumuman/simpan', 'PagesController@simpanPengumuman')->name('pengumuman.simpan');
 Route::post('/pengumuman/dibaca', 'PagesController@dibacaPengumuman')->name('pengumuman.dibaca');

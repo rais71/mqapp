@@ -52,8 +52,11 @@
                     <a href="#" type='button' class="btn btn-primary"><i class="far fa-edit putih"></i></a>
                     <a href="{{ URL::to('admin/santri/' . $santri->id) }}" type='button' class="btn btn-info"><i
                         class="fas fa-info-circle putih"></i></a>
-                    <button class="btn btn-danger" id="modal-delete" value="{{ $santri->id }}"><i
+                    @can('santri hapus')
+                    <button class="btn btn-danger tombol-konfirmasi-hapus" data-toggle="modal"
+                      data-target="#konfirmasi-hapus" value="{{ $santri->id }}"><i
                         class="fas fa-trash putih"></i></button>
+                    @endcan
                   </div>
                 </td>
               </tr>
@@ -85,6 +88,34 @@
       </div>
     </div>
   </section>
+</div>
+
+{{---------------------------- MODAL BOOTSTRAP | KONFIRMASI HAPUS DATA --------------------------------------------}}
+<div class="modal fade" tabindex="-1" role="dialog" id="konfirmasi-hapus">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="judul-acara-modal">Konfirmasi Hapus?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Apakah anda yakin ingin menghapus data santri ini beserta berkas-berkasnya?</p>
+      </div>
+      <div class="modal-footer bg-whitesmoke br">
+        @can('santri hapus')
+        <form id="form-konfirmasi-hapus" action="" method="post">
+          @method('DELETE')
+          @csrf
+          <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i>
+            Saya yakin, Hapus!</button>
+        </form>
+        @endcan
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection
 @section('js-specific')

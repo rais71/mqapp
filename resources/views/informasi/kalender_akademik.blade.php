@@ -132,7 +132,7 @@
 </section>
 </div>
 
-{{---------------------------- MODAL BOOTSTRAP | IMPORTS --------------------------------------------}}
+{{---------------------------- MODAL BOOTSTRAP | INFORMASI ACARA --------------------------------------------}}
 <div class="modal fade" tabindex="-1" role="dialog" id="info-acara-modal">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
